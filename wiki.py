@@ -10,6 +10,7 @@ import tkinter.messagebox
 from tkinter.ttk import Combobox
 from playsound import playsound
 from gtts import gTTS
+from tkinter import *
 import os,threading,time
 
 
@@ -83,10 +84,14 @@ class Wiki:
                 wikipedia.set_lang(langs)
                 
                 get_details=wikipedia.summary(search_text)
-                TXT.insert(END,get_details)
+                TXT.insert("end",get_details)
             except:
                # tkinter.messagebox.showerror("Network Error","your internet is may not working")
                pass
+
+        def thread_search():
+            t1=threading.Thread(target=search_on)
+            t1.start()
 
 
             
@@ -114,6 +119,11 @@ class Wiki:
                 #remove temperory file
             except:
                 tkinter.messagebox.askretrycancel("Internet Error","INTERNET CONNECTION MAY GONE OR LANGUAGE ERROR",icon="info")
+
+
+        def thread_speak():
+            t1=threading.Thread(target=speak)
+            t1.start()
 
                 
 
@@ -160,7 +170,7 @@ class Wiki:
         lan_combo.place(x=139,y=40)
         
         #buton to search
-        But_search=Button(Lab_top,text="Search",width=20,font=('times new roman',10,'bold'),relief="ridge",bd=4,cursor="hand2",command=search_on)
+        But_search=Button(Lab_top,text="Search",width=20,font=('times new roman',10,'bold'),relief="ridge",bd=4,cursor="hand2",command=thread_search)
         But_search.place(x=450,y=7)
         But_search.bind("<Enter>",on_enter1)
         But_search.bind("<Leave>",on_leave1)
@@ -172,7 +182,7 @@ class Wiki:
         But_clear.bind("<Leave>",on_leave2)
         
         #button to speak
-        But_speak=Button(Lab_top,text="Speak",width=15,font=('times new roman',10,'bold'),relief="ridge",bd=4,cursor="hand2",command=speak)
+        But_speak=Button(Lab_top,text="Speak",width=15,font=('times new roman',10,'bold'),relief="ridge",bd=4,cursor="hand2",command=thread_speak)
         But_speak.place(x=630,y=40)
         But_speak.bind("<Enter>",on_enter3)
         But_speak.bind("<Leave>",on_leave3)
